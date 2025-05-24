@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/popular_bottom"
+        android:icon="@drawable/ic_baseline_arrow_downward_24px"
+        android:title="@string/popular" />
+    <item
+        android:id="@+id/new_bottom"
+
+        android:icon="@drawable/ic_fire"
+        android:title="@string/newImages" />
+    <item
+        android:id="@+id/bookmarks_bottom"
+        android:icon="@drawable/ic_bookmark_border"
+        android:title="@string/bookmarks" />
+
+    <item
+        android:id="@+id/settings_bottom"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings" />
+
+</menu>

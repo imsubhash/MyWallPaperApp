@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/allerta</item>
+        <item>@font/bowlby_one_sc</item>
+        <item>@font/bubblegum_sans</item>
+        <item>@font/fredoka_one</item>
+        <item>@font/fugaz_one</item>
+        <item>@font/stint_ultra_expanded</item>
+    </array>
+</resources>

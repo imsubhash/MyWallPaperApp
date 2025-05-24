@@ -1,0 +1,41 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "a052b96aa7641c46b69ffbb15112a5f3",
+    "entities": [
+      {
+        "tableName": "BookmarkImage",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`imageName` TEXT NOT NULL, `imageUrlFull` TEXT, `imageUrlRegular` TEXT, PRIMARY KEY(`imageName`))",
+        "fields": [
+          {
+            "fieldPath": "imageName",
+            "columnName": "imageName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "imageUrlFull",
+            "columnName": "imageUrlFull",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "imageUrlRegular",
+            "columnName": "imageUrlRegular",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "imageName"
+          ]
+        }
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a052b96aa7641c46b69ffbb15112a5f3')"
+    ]
+  }
+}

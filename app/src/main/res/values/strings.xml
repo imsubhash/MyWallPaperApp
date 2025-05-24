@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Wallportal.</string>
+    <string name="popular">Popular</string>
+    <string name="saved">Saved</string>
+    <string name="newImages">New</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="drawer_item_popular">Popular</string>
+    <string name="drawer_item_new">New</string>
+    <string name="drawer_item_bookmarks">Bookmarks</string>
+    <string name="loading_wallpaper">Loading Wallpaper</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="remove_string">remove</string>
+    <string name="remove_from_bookmarks">Remove Bookmark</string>
+    <string name="image_already_bookmarked">Image already bookmarked</string>
+    <string name="remove_from_bookmarks_qm">Remove from bookmarks?</string>
+    <string name="About_string">About</string>
+    <string name="large_image_warning">Large images may take longer to load on slow connections.</string>
+    <string name="download">Download</string>
+    <string name="view_original">view original resolution</string>
+    <string name="add_to_bookmark">Add to bookmark</string>
+    <string name="curated">New</string>
+    <string name="set_as_wallpaper">set as wallpaper</string>
+    <string name="no_internet">No Internet Connection, please check and try again!</string>
+    <string name="currently_offline">Currently Offline.</string>
+    <string name="failed_to_load">Failed to Load current Image.</string>
+    <string name="bookmarks_is_empty">Bookmark list is empty</string>
+    <string name="added_success_bookmark">Added to Bookmarks!</string>
+    <string name="bookmark_activity">BookmarkActivity</string>
+    <string name="high_res_image">high res image</string>
+    <string name="recycler_view_item">recycler View Item</string>
+    <string name="settings">Settings</string>
+</resources>

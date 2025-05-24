@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottom_navigation"
+    app:startDestination="@id/new_bottom">
+
+    <fragment
+        android:id="@+id/new_bottom"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.NewFragment"
+        android:label="fragment_new">
+        <action
+            android:id="@+id/newToDetails"
+            app:destination="@id/detailActivity"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/popular_bottom"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.PopularFragment"
+        android:label="fragment_popular">
+        <action
+            android:id="@+id/popularToDetails"
+            app:destination="@id/detailActivity"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/bookmarks_bottom"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.BookmarksFragment"
+        android:label="fragment_bookmarks">
+        <action
+            android:id="@+id/bookmarkToDet"
+            app:destination="@id/detailActivity"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/fade_out"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/settings_bottom"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.SettingsFragment"
+        android:label="fragment_settings" />
+
+    <fragment
+        android:id="@+id/detailActivity"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.DetailFragment"
+        android:label="activity_image_details">
+        <argument
+            android:name="id"
+            android:defaultValue=" "
+            app:argType="string" />
+        <action
+            android:id="@+id/detailsToOR"
+            app:destination="@id/originalResolutionFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/originalResolutionFragment"
+        android:name="tk.zedlabs.wallportal.ui.fragment.OriginalResolutionFragment"
+        android:label="OriginalResolutionFragment">
+        <argument
+            android:name="urlFull"
+            android:defaultValue='""'
+            app:argType="string" />
+    </fragment>
+
+</navigation>
