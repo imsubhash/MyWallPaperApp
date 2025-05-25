@@ -71,6 +71,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation("androidx.compose.material:material-icons-extended:1.7.7")
     implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
 
 
     // For Glide annotation processor, use the KSP version:
