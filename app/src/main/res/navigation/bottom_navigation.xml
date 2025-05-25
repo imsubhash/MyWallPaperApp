@@ -65,7 +65,7 @@
 
     <fragment
         android:id="@+id/originalResolutionFragment"
-        android:name="tk.zedlabs.wallportal.ui.fragment.OriginalResolutionFragment"
+        android:name="com.subhash.mywallpaperapp.ui.fragment.OriginalResolutionFragment"
         android:label="OriginalResolutionFragment">
         <argument
             android:name="urlFull"

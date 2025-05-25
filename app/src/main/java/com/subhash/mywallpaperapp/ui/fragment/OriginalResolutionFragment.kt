@@ -1,4 +1,4 @@
-package tk.zedlabs.wallportal.ui.fragment
+package com.subhash.mywallpaperapp.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -25,28 +25,28 @@ class OriginalResolutionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         return ComposeView(requireContext()).apply {
             setContent {
-                PhotoView(navArgs.urlFull)
+                OriginalPhotoView(navArgs.urlFull)
             }
         }
     }
 
     @Composable
-    fun PhotoView(url: String) {
+    fun OriginalPhotoView(url: String) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { context ->
-                PhotoView(context)
+                PhotoView(context).apply {
+                    // Optional: Configure PhotoView here if needed
+                }
             },
             update = { view ->
-                Glide.with(this)
+                Glide.with(view.context)
                     .asBitmap()
                     .load(url)
                     .into(view)
             }
         )
     }
-
 }

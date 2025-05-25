@@ -7,11 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,11 +26,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import tk.zedlabs.wallportal.R
 import com.subhash.mywallpaperapp.ui.util.LoadingBox
 import com.subhash.mywallpaperapp.ui.util.TopBarNew
 import com.subhash.mywallpaperapp.ui.wallpaperLists.WallpaperListItem
 import com.subhash.mywallpaperapp.util.Constants.PAGE_SIZE
+import com.subhash.mywallpaperapp.R
 
 @ExperimentalComposeUiApi
 @ExperimentalFoundationApi
@@ -57,16 +58,18 @@ class NewFragment : Fragment() {
                             postViewModel.searchProgress.value
                         )
                     },
-                    backgroundColor = colorResource(R.color.listBackground)
-                ) {
-                    WallpaperListSetup()
+                    containerColor = colorResource(R.color.listBackground) // Use containerColor instead of backgroundColor in Material3
+                ) { paddingValues ->
+
+                    WallpaperListSetup(Modifier.padding(paddingValues))
+
                 }
             }
         }
     }
 
     @Composable
-    fun WallpaperListSetup() {
+    fun WallpaperListSetup(modifier: Modifier = Modifier) {
         val newWallpapers = postViewModel.newList.value
         val loading = postViewModel.loadingNew.value
         val page = postViewModel.pageNew.value
@@ -78,16 +81,18 @@ class NewFragment : Fragment() {
             Text(
                 text = "No Images!",
                 color = Color.Red,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
             )
         }
-        LazyVerticalGrid(cells = GridCells.Fixed(2)) {
-
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = modifier
+        ) {
             itemsIndexed(
                 items = newWallpapers
             ) { index, item ->
-                Log.e("LVG", "1.WallpaperListSetup : $index")
+                Log.d("LVG", "WallpaperListSetup : $index")
                 postViewModel.onChangeNewScrollPosition(index)
                 if ((index + 1) >= (page * PAGE_SIZE) && !loading) {
                     postViewModel.nextPageNew()

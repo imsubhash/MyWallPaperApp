@@ -1,4 +1,5 @@
 package com.subhash.mywallpaperapp.theme
+import com.subhash.mywallpaperapp.R
 
 
 

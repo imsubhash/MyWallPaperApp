@@ -11,7 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.subhash.mywallpaperapp.models.WallHavenResponse
 import com.subhash.mywallpaperapp.persistence.BookmarkImage
-import tk.zedlabs.wallportal.ui.util.LoadImage
+import com.subhash.mywallpaperapp.ui.util.LoadImage
 
 @Composable
 fun WallpaperListItem(item: WallHavenResponse, onClick: () -> Unit) {

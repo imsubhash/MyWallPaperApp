@@ -1,6 +1,7 @@
 package com.subhash.mywallpaperapp.ui.fragment
 
 import android.app.WallpaperManager
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -15,47 +16,38 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.*
+import androidx.compose.material.icons.sharp.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import dagger.hilt.android.AndroidEntryPoint
-import tk.zedlabs.wallportal.ui.util.LoadImage
+import com.subhash.mywallpaperapp.R
+import com.subhash.mywallpaperapp.models.WallHavenResponse
 import com.subhash.mywallpaperapp.util.Resource
 import com.subhash.mywallpaperapp.util.getUriForId
 import com.subhash.mywallpaperapp.util.shortToast
-import android.content.Intent
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.BottomSheetScaffold
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.fragment.app.Fragment
-import com.bumptech.glide.request.target.CustomTarget
-import com.subhash.mywallpaperapp.models.WallHavenResponse
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import com.subhash.mywallpaperapp.ui.util.LoadImage
 
-
-@ExperimentalMaterialApi
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
 
@@ -67,7 +59,6 @@ class DetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         return ComposeView(requireContext()).apply {
             setContent {
                 DetailsContentWrapper()
@@ -93,14 +84,11 @@ class DetailFragment : Fragment() {
             }
             is Resource.Loading -> {
                 Box(
-                    modifier = Modifier
-                        .width(10.dp)
-                        .height(10.dp),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
                 }
-
             }
         }
     }
@@ -113,10 +101,11 @@ class DetailFragment : Fragment() {
             sheetContent = {
                 ImageInformationAndOptions(imageDetails = imageDetails)
             },
-            sheetBackgroundColor = colorResource(R.color.pastelPrimary).copy(alpha = 0.8f),
+            containerColor = colorResource(R.color.listBackground),
+            sheetContainerColor = colorResource(R.color.pastelPrimary).copy(alpha = 0.8f),
             sheetShape = RoundedCornerShape(topStart = 20.dp, topEnd = 20.dp),
             sheetPeekHeight = 90.dp,
-        ) {
+        ) { _ ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -130,13 +119,12 @@ class DetailFragment : Fragment() {
                         .padding(10.dp)
                         .fillMaxWidth()
                 ) {
-                    Box(
+                    IconButton(
+                        onClick = { findNavController().navigateUp() },
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(45.dp)
                             .background(colorResource(R.color.pastelPrimary).copy(alpha = 0.4f))
-                            .clickable { findNavController().navigateUp() },
-                        contentAlignment = Alignment.Center
+                            .size(45.dp)
                     ) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
@@ -145,38 +133,29 @@ class DetailFragment : Fragment() {
                             modifier = Modifier.size(30.dp)
                         )
                     }
-                    Box(
+                    IconButton(
+                        onClick = { addBookmark(isBookmark == true, imageDetails) },
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(45.dp)
                             .background(colorResource(R.color.pastelPrimary).copy(alpha = 0.4f))
-                            .clickable { addBookmark(isBookmark!!, imageDetails) },
-                        contentAlignment = Alignment.Center
+                            .size(45.dp)
                     ) {
                         Icon(
-                            imageVector = when (isBookmark!!) {
-                                true -> Icons.Outlined.Bookmark
-                                else -> Icons.Outlined.BookmarkBorder
-                            },
+                            imageVector = if (isBookmark == true) Icons.Outlined.Bookmark else Icons.Outlined.BookmarkBorder,
                             contentDescription = "bookmark-button",
                             tint = Color.White,
                             modifier = Modifier.size(30.dp)
                         )
                     }
                 }
-
             }
         }
     }
 
     @Composable
-    fun ImageInformationAndOptions(
-        imageDetails: WallHavenResponse,
-    ) {
-        //options icons row --downloads --setWallpaper --bookmark --externalLink
+    fun ImageInformationAndOptions(imageDetails: WallHavenResponse) {
         Column(
-            modifier = Modifier
-                .padding(20.dp, 10.dp, 20.dp, 20.dp)
+            modifier = Modifier.padding(20.dp, 10.dp, 20.dp, 20.dp)
         ) {
             Divider(
                 modifier = Modifier
@@ -191,60 +170,17 @@ class DetailFragment : Fragment() {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 30.dp, end = 30.dp)
+                    .padding(horizontal = 30.dp)
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowDropDown,
-                    contentDescription = "download-image",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { download(imageDetails.path!!, imageDetails.id!!) },
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    imageVector = Icons.Sharp.Wallpaper,
-                    contentDescription = "set-as-wallpaper",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { setWallpaper(imageDetails) },
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    imageVector = Icons.Outlined.OpenInNew,
-                    contentDescription = "open-in-browser",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable {
-                            val browserIntent = Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(imageDetails.url)
-                            )
-                            startActivity(browserIntent)
-                        },
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    imageVector = Icons.Outlined.Landscape,
-                    contentDescription = "original-aspect-ratio",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { navigateOriginalRes(imageDetails.path!!) },
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Icon(
-                    imageVector = Icons.Outlined.Share,
-                    contentDescription = "share-image",
-                    tint = Color.White,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .clickable { shareImage(imageDetails.url!!) },
-                )
+                IconAction(Icons.Outlined.ArrowDropDown, "download", { download(imageDetails.path!!, imageDetails.id!!) })
+                IconAction(Icons.Sharp.Wallpaper, "set-wallpaper", { setWallpaper(imageDetails) })
+                IconAction(Icons.Outlined.OpenInNew, "open-browser", {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(imageDetails.url)))
+                })
+                IconAction(Icons.Outlined.Landscape, "original-res", { navigateOriginalRes(imageDetails.path!!) })
+                IconAction(Icons.Outlined.Share, "share", { shareImage(imageDetails.url!!) })
             }
             Spacer(modifier = Modifier.height(25.dp))
             Divider(
@@ -255,12 +191,24 @@ class DetailFragment : Fragment() {
                     .alpha(0.3f),
                 color = Color.LightGray
             )
-            // --uploader --resolution --views --category
             RowWithIconAndText(Icons.Sharp.AccountCircle, imageDetails.uploader?.username ?: "")
             RowWithIconAndText(Icons.Sharp.HdrPlus, imageDetails.resolution ?: "")
-            RowWithIconAndText(Icons.Sharp.Fingerprint, (imageDetails.views ?: "").toString())
+            RowWithIconAndText(Icons.Sharp.Fingerprint, (imageDetails.views ?: 0).toString())
             RowWithIconAndText(Icons.Sharp.Category, imageDetails.category ?: "")
         }
+    }
+
+    @Composable
+    fun IconAction(icon: ImageVector, description: String, onClick: () -> Unit) {
+        Icon(
+            imageVector = icon,
+            contentDescription = description,
+            tint = Color.White,
+            modifier = Modifier
+                .size(30.dp)
+                .clickable(onClick = onClick)
+        )
+        Spacer(modifier = Modifier.width(10.dp))
     }
 
     @Composable
@@ -269,13 +217,12 @@ class DetailFragment : Fragment() {
         Row {
             Icon(
                 imageVector = icon,
-                contentDescription = "profile",
+                contentDescription = null,
                 tint = Color.White
             )
             Spacer(modifier = Modifier.width(10.dp))
             Text(text = text, color = Color.White)
         }
-
     }
 
     private fun addBookmark(isBookmark: Boolean, imageDetails: WallHavenResponse) {
@@ -293,10 +240,7 @@ class DetailFragment : Fragment() {
             .asBitmap()
             .load(imageDetails.path!!)
             .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     CoroutineScope(Dispatchers.IO).launch {
                         bookMarkViewModel.downloadImage(resource, imageDetails.id!!)
                         withContext(Dispatchers.Main) {
@@ -311,8 +255,7 @@ class DetailFragment : Fragment() {
 
     private fun startWallpaperIntent(uri: Uri) {
         try {
-            val wallpaperIntent = WallpaperManager
-                .getInstance(requireContext())
+            val wallpaperIntent = WallpaperManager.getInstance(requireContext())
                 .getCropAndSetWallpaperIntent(uri)
                 .setDataAndType(uri, "image/*")
                 .putExtra("mimeType", "image/*")
@@ -328,10 +271,7 @@ class DetailFragment : Fragment() {
             .asBitmap()
             .load(urlFull)
             .into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
+                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     bookMarkViewModel.downloadImage(resource, id)
                     requireContext().shortToast("Download Started")
                 }
@@ -343,12 +283,10 @@ class DetailFragment : Fragment() {
     }
 
     private fun navigateOriginalRes(urlFull: String) {
-        findNavController().navigate(
-            DetailFragmentDirections.detailsToOR(urlFull)
-        )
+        findNavController().navigate(DetailFragmentDirections.detailsToOR(urlFull))
     }
 
-    private fun shareImage(url: String){
+    private fun shareImage(url: String) {
         val sendIntent: Intent = Intent().apply {
             action = Intent.ACTION_SEND
             putExtra(Intent.EXTRA_TEXT, url)

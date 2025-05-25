@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
     id("com.google.dagger.hilt.android")
     id("androidx.room")
     id("kotlin-parcelize")
@@ -65,6 +66,15 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:$navVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
+    implementation("com.github.skydoves:landscapist-glide:2.3.0")
+    implementation("com.github.chrisbanes:PhotoView:2.3.0")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("androidx.compose.material:material-icons-extended:1.7.7")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+
+    // For Glide annotation processor, use the KSP version:
+    ksp("com.github.bumptech.glide:compiler:4.15.1")
 
     // Room
     implementation("androidx.room:room-runtime:$room_version")

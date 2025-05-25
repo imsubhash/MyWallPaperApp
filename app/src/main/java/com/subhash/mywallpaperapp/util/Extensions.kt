@@ -5,20 +5,14 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Environment
-import android.transition.TransitionManager
 import android.view.ViewGroup
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import androidx.core.content.FileProvider
 import androidx.transition.TransitionManager
-import tk.zedlabs.wallportal.BuildConfig
+import com.github.chrisbanes.photoview.BuildConfig
 import java.io.File
 
-fun Context.isConnectedToNetwork(): Boolean {
-    val manager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-
-    return manager?.activeNetworkInfo?.isConnectedOrConnecting ?: false
-}
 
 fun Context.shortToast(message: String) = Toast.makeText(this, message, LENGTH_SHORT).show()
 
@@ -34,7 +28,7 @@ fun ViewGroup.makeFadeTransition(animationDuration: Long) {
 
 fun Context.getUriForId(id: String): Uri =
     FileProvider.getUriForFile(
-        this, BuildConfig.APPLICATION_ID + ".fileprovider",
+        this, "com.subhash.mywallpaperapp" + ".fileprovider",
         File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)}/WallPortal/$id.jpg")
     )
 
